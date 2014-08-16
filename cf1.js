@@ -3,90 +3,142 @@
 //Each shelf should know what books it contains.
 //Make the book object have "enshelf" and "unshelf" methods that control what shelf the book is sitting on.
 //The library should have a method to report all books it contains.
-//
 //In addition to pushing this .js file to your Github account,
 //please also setup a http://jsfiddle.net/ with the solution
 //and enter the saved URL here so we can take a look.
 
 //library constructor
 var Library = function(name){
-    this.name = name;
-    this.numShelfs = 0;
-    this.books = [];
-    this.Shelfs = [];
-    this.reportAllBooks = function(){
-        console.log(this.name+" contains:");
-		for (var i = 0; i < this.books.length; i++) {
-			console.log(this.books[i]);
+	this.name = name;
+	this.numShelfs = 0;
+	this.shelves = [];
+	this.reportAllBooks = function(){
+		console.log(this.name+" contains:");
+		for (var i = 0; i < this.shelves.length; i++) {
+			this.shelves[i].reportAllBooks();
 		}
-        console.log("\n");
+		console.log("\n");
+	};
+	// this.findShelf = function(name){
+	// 	var firstLetter = name.substring(0,1).toLowerCase();
+	// 	for (var i = 0; i < this.shelf.length; i++) {
+	// 		if(this.shelf[i].name === firstLetter){
+	// 			return shelf[i];
+	// 		} else {
+	// 			return new Shelf(firstLetter,this);
+	// 		}
+	// 	}
+	// };
+	this.addBook = function(book) {
+		var firstLetter = book.name.substring(0,1).toLowerCase();
+		for (var i = 0; i < this.shelves.length; i++) {
+			if(this.shelves[i].name == firstLetter){
+				this.shelves[i].addBook(book);
+				return;
+			}
+		}
+		new Shelf(firstLetter,this).addBook(book);
+
+	};
+
+	this.removeBook = function(book) {
+		var firstLetter = book.name.substring(0,1).toLowerCase();
+		for (var i = 0; i < this.shelves.length; i++) {
+			if(this.shelves[i].name == firstLetter){
+				this.shelves[i].removeBook(book);
+				return;
+			}
+		}
+
+		new Shelf(firstLetter,this).removeBook(book);
+		
 	};
 };
 
 //Shelf constructor
-var Shelf = function(name,libarary){
+var Shelf = function(name,library){
 	this.name = name;
 	this.books = [];
-	libarary.numShelfs++;
-    this.reportAllBooks = function(){
-        console.log(this.name+" contains:");
-        for (var i = 0; i < this.books.length; i++) {
-            console.log(this.books[i]);
-	    }
-        console.log("\n");
-    };
+	library.numShelfs++;
+	library.shelves.push(this);
+	this.reportAllBooks = function(){
+		console.log(this.name+" contains:");
+		for (var i = 0; i < this.books.length; i++) {
+			console.log(this.books[i].getBookName());
+		}
+		console.log("\n");
+	};
+
+	this.addBook = function(book){
+		this.books.push(book);
+	};
+	this.removeBook = function(book){
+		var locationOnShelf = this.books.indexOf(book);
+		console.log(locationOnShelf);
+		this.books.splice(locationOnShelf,1);
+	};
 };
 
 
 //book constructor
-var Book = function(name,libarary){
+var Book = function(name,library){
 	this.name = name;
+	this.library = library;
 	//enshelf method
-	this.enShelf = function(shelf){
-		shelf.books.push(this.name);
-		libarary.books.push(this.name);
+	this.enShelf = function() {
+		this.library.addBook(this);
+		// var shelf = this.library.findShelf(this.name);
+		// for (var i in shelf) {
+
+		// }
+		// shelf.books.push(this);
 	};
+
 	//unshelf method
-	this.unShelf = function(shelf){
-		var locationOnShelf = shelf.books.indexOf(this.name);
-		shelf.books.splice(locationOnShelf,1);
+	this.unShelf = function(){
+		this.library.removeBook(this);
+		// var shelf = this.library.findShelf(this.name);
+		// var locationOnShelf = shelf.books.indexOf(this);
+		// console.log(locationOnShelf);
+		// shelf.books.splice(locationOnShelf,1);
 	};
+	this.getBookName = function() {
+		return this.name;
+	}
 };
 
-//make a libarary with the Libarary constructor called SeattleLIbarary
-var SeattleLibarary = new Library("SeattleLibarary");
+//make a library with the library constructor called Seattlelibrary
+var Seattlelibrary = new Library("Seattlelibrary");
 //make some shelfs with the Shelf constructor
 
-var shelf1 = new Shelf("shelf1",SeattleLibarary);
-var shelf2 = new Shelf("shelf2",SeattleLibarary);
+//use the book constructor to place a book in the library
 
-//use the book constructor to place a book in the libarary
+var harryPotter = new Book("Sorcerer's Stone",Seattlelibrary);
+var theAvatar = new Book("Avatar",Seattlelibrary);
+var ants = new Book("The Secret World of Ants",Seattlelibrary);
+var harryPotter2 = new Book("Sorcerer's Stone2",Seattlelibrary);
+var avatar2 = new Book("Avatar 2",Seattlelibrary);
 
-var harryPotter = new Book("Sorcerer's Stone",SeattleLibarary);
-var theAvatar = new Book("Avatar",SeattleLibarary);
-var ants = new Book("The Secret World of Ants",SeattleLibarary);
 
 //put harry potter and avatar on shelf 1
 
-harryPotter.enShelf(shelf1);
-theAvatar.enShelf(shelf1);
+
+
+harryPotter.enShelf(); //index 0
+theAvatar.enShelf(); //index 1
+harryPotter2.enShelf(); //index 2
+avatar2.enShelf() // index 3
 
 //put ants on shelf 2
 
-ants.enShelf(shelf2);
+ants.enShelf();
 
 //report all books on shelf
-shelf1.reportAllBooks();
-shelf2.reportAllBooks();
+Seattlelibrary.reportAllBooks();
 
 //unshelf harry potter off shelf1
-harryPotter.unShelf(shelf1);
+harryPotter.unShelf(); //first occurance, index 0
 
-//report all books in the libarary;
-SeattleLibarary.reportAllBooks();
-
-//report all books on shelf
-shelf1.reportAllBooks();
-shelf2.reportAllBooks();
-
+//report all books in the library;
+Seattlelibrary.reportAllBooks();
 
