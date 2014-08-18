@@ -19,16 +19,6 @@ var Library = function(name){
 		}
 		console.log("\n");
 	};
-	// this.findShelf = function(name){
-	// 	var firstLetter = name.substring(0,1).toLowerCase();
-	// 	for (var i = 0; i < this.shelf.length; i++) {
-	// 		if(this.shelf[i].name === firstLetter){
-	// 			return shelf[i];
-	// 		} else {
-	// 			return new Shelf(firstLetter,this);
-	// 		}
-	// 	}
-	// };
 	this.addBook = function(book) {
 		var firstLetter = book.name.substring(0,1).toLowerCase();
 		for (var i = 0; i < this.shelves.length; i++) {
@@ -38,9 +28,7 @@ var Library = function(name){
 			}
 		}
 		new Shelf(firstLetter,this).addBook(book);
-
 	};
-
 	this.removeBook = function(book) {
 		var firstLetter = book.name.substring(0,1).toLowerCase();
 		for (var i = 0; i < this.shelves.length; i++) {
@@ -49,9 +37,7 @@ var Library = function(name){
 				return;
 			}
 		}
-
 		new Shelf(firstLetter,this).removeBook(book);
-		
 	};
 };
 
@@ -62,11 +48,10 @@ var Shelf = function(name,library){
 	library.numShelfs++;
 	library.shelves.push(this);
 	this.reportAllBooks = function(){
-		console.log(this.name+" contains:");
+		console.log(this.name+" shelf contains:");
 		for (var i = 0; i < this.books.length; i++) {
 			console.log(this.books[i].getBookName());
 		}
-		console.log("\n");
 	};
 
 	this.addBook = function(book){
@@ -74,7 +59,6 @@ var Shelf = function(name,library){
 	};
 	this.removeBook = function(book){
 		var locationOnShelf = this.books.indexOf(book);
-		console.log(locationOnShelf);
 		this.books.splice(locationOnShelf,1);
 	};
 };
@@ -84,23 +68,15 @@ var Shelf = function(name,library){
 var Book = function(name,library){
 	this.name = name;
 	this.library = library;
+
 	//enshelf method
 	this.enShelf = function() {
 		this.library.addBook(this);
-		// var shelf = this.library.findShelf(this.name);
-		// for (var i in shelf) {
-
-		// }
-		// shelf.books.push(this);
 	};
 
 	//unshelf method
 	this.unShelf = function(){
 		this.library.removeBook(this);
-		// var shelf = this.library.findShelf(this.name);
-		// var locationOnShelf = shelf.books.indexOf(this);
-		// console.log(locationOnShelf);
-		// shelf.books.splice(locationOnShelf,1);
 	};
 	this.getBookName = function() {
 		return this.name;
@@ -109,10 +85,8 @@ var Book = function(name,library){
 
 //make a library with the library constructor called Seattlelibrary
 var Seattlelibrary = new Library("Seattlelibrary");
-//make some shelfs with the Shelf constructor
 
 //use the book constructor to place a book in the library
-
 var harryPotter = new Book("Sorcerer's Stone",Seattlelibrary);
 var theAvatar = new Book("Avatar",Seattlelibrary);
 var ants = new Book("The Secret World of Ants",Seattlelibrary);
@@ -120,25 +94,21 @@ var harryPotter2 = new Book("Sorcerer's Stone2",Seattlelibrary);
 var avatar2 = new Book("Avatar 2",Seattlelibrary);
 
 
-//put harry potter and avatar on shelf 1
-
-
-
-harryPotter.enShelf(); //index 0
-theAvatar.enShelf(); //index 1
-harryPotter2.enShelf(); //index 2
-avatar2.enShelf() // index 3
-
-//put ants on shelf 2
-
+//put several different books on their alphabetically organized shelves
+harryPotter.enShelf();
+theAvatar.enShelf();
+harryPotter2.enShelf();
+avatar2.enShelf();
 ants.enShelf();
 
-//report all books on shelf
+//report all books on shelf their shelves
 Seattlelibrary.reportAllBooks();
 
-//unshelf harry potter off shelf1
-harryPotter.unShelf(); //first occurance, index 0
+//unshelf harry potter
+harryPotter.unShelf();
 
+
+console.log('one book has been unshelved');
 //report all books in the library;
 Seattlelibrary.reportAllBooks();
 
