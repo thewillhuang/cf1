@@ -86,7 +86,7 @@ var Book = function(name,library){
 //make a library with the library constructor called Seattlelibrary
 var Seattlelibrary = new Library("Seattlelibrary");
 
-//use the book constructor to place a book in the library
+//use the book constructor to place a books in the library
 var harryPotter = new Book("Sorcerer's Stone",Seattlelibrary);
 var theAvatar = new Book("Avatar",Seattlelibrary);
 var ants = new Book("The Secret World of Ants",Seattlelibrary);
